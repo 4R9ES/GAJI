@@ -17,7 +17,7 @@ public enum ErrorCode {
 
     // 회원
     USER_LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST, "USER400_1", "존재하지 않는 동네입니다."),
-    USER_LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "USER401_1", "아이디 또는 비밀번호가 올바르지 않습니다."),
+    USER_LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "USER401_1", "이메일 또는 비밀번호가 올바르지 않습니다."),
     USER_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "USER401_2", "현재 비밀번호가 올바르지 않습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404_1", "존재하지 않는 회원입니다."),
     USER_LOGIN_ID_DUPLICATE(HttpStatus.CONFLICT, "USER409_1", "이미 사용 중인 아이디입니다."),
