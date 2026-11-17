@@ -1,9 +1,9 @@
-create database if not exists gazi;
-use gazi;
+create database if not exists gaji;
+use gaji;
 
 create table if not exists location (
     location_id int auto_increment not null,
-    name varchar(100) not null,
+    name varchar(100) not null unique,
     lat decimal(11, 8) not null,
     lng decimal(11, 8) not null,
     primary key (location_id)
@@ -17,7 +17,7 @@ create table if not exists `user` (
     bio varchar(300) null,
     location_id int not null,
     user_rank tinyint not null default 50,
-    account varchar(30) null,
+    account varchar(30) not null,
     follower_count int not null default 0,
     following_count int not null default 0,
     primary key (login_id),
@@ -71,7 +71,7 @@ create table if not exists comment (
 create table if not exists deal_log (
     deal_id int auto_increment not null,
     post_id int not null unique,
-    s_id varchar(20) not null,
+    buyer_id varchar(20) not null,
     money int not null,
     deal_date datetime not null default current_timestamp,
     buyer_score tinyint null,
@@ -79,6 +79,6 @@ create table if not exists deal_log (
     check (money >= 0),
     check (buyer_score between 0 and 10),
     foreign key (post_id) references post(id),
-    foreign key (s_id) references `user`(login_id)
+    foreign key (buyer_id) references `user`(login_id)
 );
 
