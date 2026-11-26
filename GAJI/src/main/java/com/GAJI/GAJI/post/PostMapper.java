@@ -14,6 +14,12 @@ import java.util.List;
 @Mapper
 public interface PostMapper {
 
+    @Select("SELECT EXISTS (SELECT 1 FROM post WHERE id = #{postId})")
+    boolean postExists(@Param("postId") int postId);
+
+    @Select("SELECT id FROM post WHERE id = #{postId} FOR UPDATE")
+    Integer lockPost(@Param("postId") int postId);
+
     @Insert("""
             INSERT INTO post (user_id, content, price, `condition`, content_img)
             VALUES (#{sellerId}, #{content}, #{price}, #{condition}, #{contentImg,jdbcType=VARCHAR})
