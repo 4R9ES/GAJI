@@ -1,5 +1,5 @@
 USE gaji;
-
+DELETE FROM `user` WHERE login_id = 'han';
 -- schema.sql / data.sql 기준 테스트 값
 SET @me_id     = 'kim';  -- 로그인한 회원 (login_id 는 문자열)
 SET @target_id = 'lee';  -- 조회·팔로우 대상 회원
@@ -54,25 +54,43 @@ LIMIT 3;
 
 -- B. 회원 · 팔로우 기능
 
--- B1. 회원가입 
+-- B0. 동네 목록 조회
+SELECT location_id, name
+FROM location
+ORDER BY location_id;
+
+-- B1. 회원가입
+SET @new_login_id    = 'han';
+SET @new_email       = 'han@test.com';
+SET @new_location_id = 1;
+
+-- 아이디 중복 확인 (1이면 USER409_1)
+SELECT EXISTS (SELECT 1 FROM `user` WHERE login_id = @new_login_id) AS login_id_exists;
+-- 이메일 중복 확인 (1이면 USER409_2)
+SELECT EXISTS (SELECT 1 FROM `user` WHERE email = @new_email) AS email_exists;
+-- 동네 존재 확인 (0이면 USER400_1)
+SELECT EXISTS (SELECT 1 FROM location WHERE location_id = @new_location_id) AS location_exists;
+
 START TRANSACTION;
 INSERT INTO `user` (login_id, password, name, email, bio, location_id, account)
-VALUES ('han', 'test1234', '한지민', 'han@test.com', '새로 가입했어요.', 1, 'han_account');
+VALUES (@new_login_id, 'test1234', '한지민', @new_email, '새로 가입했어요.', @new_location_id, 'han_account');
 ROLLBACK;
 
--- B2. 로그인 
+-- B2. 로그인
 SET @email = 'kim@test.com';
 SET @pw    = 'test1234';
-SELECT login_id, name FROM `user`
-WHERE email = @email AND password = @pw;
-
--- B3. 프로필 조회 (이름, 이메일, 소개 + 팔로워/팔로잉 수)
-SELECT u.login_id, u.name, u.email, u.bio, l.name AS location, u.user_rank,
-       (SELECT COUNT(*) FROM follow WHERE r_id = u.login_id) AS follower_count,
-       (SELECT COUNT(*) FROM follow WHERE s_id = u.login_id) AS following_count
+SELECT u.login_id, u.name, u.email, u.bio, u.location_id, l.name AS location, u.account,
+       u.user_rank, u.follower_count, u.following_count
 FROM `user` u
-LEFT JOIN location l ON l.location_id = u.location_id
-WHERE u.login_id = @target_id;
+JOIN location l ON l.location_id = u.location_id
+WHERE u.email = @email AND u.password = @pw;
+
+-- B3. 내 프로필 정보 (이름, 이메일, 소개, 동네, 계좌, 신뢰도 + 팔로워/팔로잉 수)
+SELECT u.login_id, u.name, u.email, u.bio, u.location_id, l.name AS location, u.account,
+       u.user_rank, u.follower_count, u.following_count
+FROM `user` u
+JOIN location l ON l.location_id = u.location_id
+WHERE u.login_id = @me_id;
 
 -- B4. 비밀번호 변경 (현재 비밀번호가 맞을 때만 변경, changed 가 1이면 성공)
 SET @old_pw = 'test1234';
