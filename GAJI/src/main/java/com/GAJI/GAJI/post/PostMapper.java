@@ -3,11 +3,13 @@ package com.GAJI.GAJI.post;
 import com.GAJI.GAJI.post.dto.PostSummary;
 import org.apache.ibatis.annotations.Arg;
 import org.apache.ibatis.annotations.ConstructorArgs;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -19,6 +21,18 @@ public interface PostMapper {
 
     @Select("SELECT id FROM post WHERE id = #{postId} FOR UPDATE")
     Integer lockPost(@Param("postId") int postId);
+
+    @Insert("INSERT INTO likes (user_id, post_id) VALUES (#{userId}, #{postId})")
+    void insertLike(@Param("userId") String userId, @Param("postId") int postId);
+
+    @Delete("DELETE FROM likes WHERE user_id = #{userId} AND post_id = #{postId}")
+    int deleteLike(@Param("userId") String userId, @Param("postId") int postId);
+
+    @Update("UPDATE post SET likes_count = likes_count + #{change} WHERE id = #{postId}")
+    void changeLikesCount(@Param("postId") int postId, @Param("change") int change);
+
+    @Select("SELECT likes_count FROM post WHERE id = #{postId}")
+    int findLikesCount(@Param("postId") int postId);
 
     @Insert("""
             INSERT INTO post (user_id, content, price, `condition`, content_img)
@@ -53,9 +67,14 @@ public interface PostMapper {
                    p.likes_count AS likesCount
             FROM post p
             JOIN `user` u ON u.login_id = p.user_id
-            <if test="userId != null">
-                WHERE p.user_id = #{userId}
-            </if>
+            <where>
+                <if test="userId != null">
+                    p.user_id = #{userId}
+                </if>
+                <if test="likedBy != null">
+                    AND EXISTS (SELECT 1 FROM likes l WHERE l.user_id = #{likedBy} AND l.post_id = p.id)
+                </if>
+            </where>
             ORDER BY
             <choose>
                 <when test="sort.name() == 'PRICE_ASC'">p.price ASC, p.id DESC</when>
@@ -78,6 +97,7 @@ public interface PostMapper {
             @Arg(column = "likesCount", javaType = int.class)
     })
     List<PostSummary> findPosts(@Param("userId") String userId,
+                                @Param("likedBy") String likedBy,
                                 @Param("sort") PostSort sort,
                                 @Param("offset") long offset,
                                 @Param("limit") long limit);
