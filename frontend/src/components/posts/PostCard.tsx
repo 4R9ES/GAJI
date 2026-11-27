@@ -20,13 +20,19 @@ export function PostCard({ post }: { post: Post }) {
     <div className="product-item">
       <Link to={`/posts/${post.id}`} className="block">
         <div className="relative aspect-square overflow-hidden rounded-card bg-paper-2">
-          <img
-            src={post.contentImgUrl}
-            alt={post.title}
-            width={640}
-            height={640}
-            className={`size-full object-cover ${post.status === 'SOLD' ? 'opacity-60' : ''}`}
-          />
+          {post.contentImgUrl ? (
+            <img
+              src={post.contentImgUrl}
+              alt={post.title}
+              width={640}
+              height={640}
+              className={`size-full object-cover ${post.status === 'SOLD' ? 'opacity-60' : ''}`}
+            />
+          ) : (
+            <div className="flex size-full items-center justify-center text-sm text-muted">
+              사진 없음
+            </div>
+          )}
           <span
             className={`absolute top-3 left-3 rounded px-2 py-1 text-xs font-semibold ${post.status === 'ON_SALE' ? 'bg-surface text-brand' : post.status === 'RESERVED' ? 'bg-warm text-warm-ink' : 'bg-ink text-white'}`}
           >

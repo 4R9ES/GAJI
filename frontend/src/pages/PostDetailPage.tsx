@@ -69,14 +69,20 @@ export function PostDetailPage() {
         우리 동네로 돌아가기
       </Link>
       <div className="mt-4 grid gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
-        <img
-          src={item.contentImgUrl}
-          alt={item.title}
-          width={800}
-          height={800}
-          fetchPriority="high"
-          className="aspect-square w-full rounded-card bg-paper-2 object-cover"
-        />
+        {item.contentImgUrl ? (
+          <img
+            src={item.contentImgUrl}
+            alt={item.title}
+            width={800}
+            height={800}
+            fetchPriority="high"
+            className="aspect-square w-full rounded-card bg-paper-2 object-cover"
+          />
+        ) : (
+          <div className="flex aspect-square w-full items-center justify-center rounded-card bg-paper-2 text-muted">
+            사진 없음
+          </div>
+        )}
         <aside className="lg:sticky lg:top-24 lg:row-span-2 lg:self-start">
           <div className="flex gap-2">
             <span className="rounded-lg bg-leaf-soft px-3 py-1 text-sm font-semibold text-leaf-dark">
