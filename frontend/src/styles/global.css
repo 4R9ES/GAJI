@@ -1,0 +1,161 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: brand · redesign: full
+ * paper: white (user brand) · accent: gazi purple · display: Wanted Sans Variable (heads, prices, figures) · body: Pretendard Variable
+ * nav: top bar, three destinations and the sell action (sidebar of four removed) · footer: one line, tagline and photo credit
+ * signature: the neighborhood bar, province and district as one search field · states: loading, empty, error, full
+ * axes: light/grotesk-sans/chromatic-purple · posture: restrained · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V3 · weakest: V, same brand system as the 2026-11-05 run by request; the change is composition: top bar, neighborhood bar, sticky buy box, side summary on profiles */
+/* Hallmark · dropped sidebar note "댓글로 거래를 문의하세요 / 판매자 프로필에서 거래 기록을 먼저 확인해 보세요." · 69 names it, the detail page's comment section says it where it acts */
+/* Hallmark · dropped feed button "내 물건 판매하기" · the top bar's 판매하기 goes to the same /posts/new, F4 keeps one filled primary */
+/* Hallmark · reworded "찜 N · 로그인" to "로그인하고 찜하기 N", "← 우리 동네로 돌아가기" to "우리 동네로 돌아가기", "← 프로필" to "프로필로 돌아가기", "← 나의 가지" to "나의 가지로 돌아가기", "← 돌아가기" to "돌아가기", "로컬 데모 · 목 데이터" to "로컬 데모용 목 데이터라 새로고침하면 초기화됩니다." · 63 names the dots and arrows */
+/* Hallmark · dismissed kept 1:21 · the mock comment's clock time changes on every load, the comment itself is kept */
+/* Hallmark · finish-review: in-thread · fixed footer rule wider than content, Korean syllable wrapping (break-keep), 4:3 crop cutting the product, select focus ring, 44px targets · sweep: 0 FAIL, 0 REFLEX · taste copy-lint 0 FAIL */
+@import 'tailwindcss';
+@import './tokens.css';
+@import './base.css' layer(base);
+@layer base {
+  body {
+    @apply min-w-80 font-sans break-keep text-ink;
+  }
+  input:not([type='file']),
+  select,
+  textarea {
+    @apply w-full rounded-control border border-field-edge bg-surface px-4 py-3 text-base hover:border-ink focus-visible:border-brand;
+  }
+  textarea {
+    @apply min-h-28 resize-y;
+  }
+  input[type='file'] {
+    @apply w-full rounded-control border border-dashed border-field-edge p-4 text-sm text-muted file:mr-3 file:rounded-control file:border-0 file:bg-brand-soft file:px-3 file:py-2 file:font-medium file:text-brand;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+}
+@layer components {
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-control bg-brand px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-surface hover:bg-brand-dark disabled:pointer-events-none;
+  }
+  .btn-secondary {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-control border border-field-edge bg-surface px-4 py-2.5 text-sm font-medium whitespace-nowrap hover:bg-paper-2;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 16px;
+  }
+  .product-meta {
+    @apply mt-2 text-sm leading-relaxed text-muted;
+  }
+  .product-item {
+    @apply block min-w-0;
+  }
+  .btn:active:not(:disabled),
+  .btn-secondary:active:not(:disabled),
+  .card-like:active:not(:disabled) {
+    @apply motion-safe:translate-y-px;
+  }
+  .comment-action {
+    @apply inline-flex min-h-11 items-center text-sm font-medium text-muted hover:text-brand hover:underline;
+  }
+  .card-like {
+    @apply -mr-2 inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-control px-2 hover:bg-brand-soft hover:text-brand;
+  }
+  .product-item > a:hover h3 {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .top-link {
+    @apply flex items-center border-b-2 border-transparent pt-0.5 text-sm font-medium text-muted hover:text-ink;
+  }
+  .top-link.active {
+    @apply border-brand text-brand;
+  }
+  .neighborhood-bar {
+    @apply flex items-center gap-3 rounded-control border border-field-edge bg-surface px-4;
+  }
+  .neighborhood-bar select {
+    @apply min-h-14 border-0 bg-transparent px-2 text-lg font-medium focus-visible:-outline-offset-4;
+  }
+  .stat-row {
+    @apply grid grid-cols-3 border-y border-line;
+  }
+  .stat-row > div {
+    @apply border-l border-line py-4 pl-4 first:border-l-0 first:pl-0;
+  }
+  .stat-row dt {
+    @apply text-sm text-muted;
+  }
+  .stat-row dd {
+    @apply mt-1 font-display text-2xl font-bold tabular-nums;
+  }
+  .photo-drop {
+    @apply relative flex aspect-square items-center justify-center overflow-hidden rounded-card border border-dashed border-field-edge bg-paper-2 text-center text-sm font-normal hover:border-brand has-[input:focus-visible]:outline-2 has-[input:focus-visible]:outline-offset-2 has-[input:focus-visible]:outline-focus;
+  }
+  .photo-drop input[type='file'] {
+    @apply absolute inset-0 size-full cursor-pointer opacity-0;
+  }
+  .title-field {
+    @apply rounded-none border-0 border-b-2 bg-transparent px-0 pb-3 text-2xl font-bold placeholder:font-medium focus-visible:outline-offset-6;
+  }
+  .content-field {
+    @apply min-h-52 resize-none rounded-card border-2 border-brand bg-surface px-5 py-4 leading-7 hover:border-brand-dark focus-visible:outline-offset-3;
+  }
+  .price-field {
+    @apply relative block;
+  }
+  .price-field input {
+    @apply [appearance:textfield] pr-12 font-display text-2xl font-bold tabular-nums [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none;
+  }
+  .price-field > span {
+    @apply pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-lg font-medium text-muted;
+  }
+  .segmented {
+    @apply grid grid-cols-3 gap-2;
+  }
+  .segmented label {
+    @apply relative cursor-pointer;
+  }
+  .segmented input {
+    @apply absolute size-px opacity-0;
+  }
+  .segmented span {
+    @apply flex min-h-12 items-center justify-center rounded-control border border-field-edge px-2 text-sm font-medium whitespace-nowrap text-muted hover:border-ink hover:text-ink;
+  }
+  .segmented input:checked + span {
+    @apply border-brand bg-brand-soft text-brand;
+  }
+  .segmented input:focus-visible + span {
+    @apply outline-2 outline-offset-2 outline-focus;
+  }
+  .split-aside {
+    @apply grid gap-12 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-16;
+  }
+  .back-link {
+    @apply inline-flex min-h-11 items-center text-sm text-muted underline-offset-4 hover:text-ink hover:underline;
+  }
+  .activity-tabs {
+    @apply flex gap-5 overflow-x-auto border-b border-line;
+  }
+  .activity-tab {
+    @apply min-h-12 shrink-0 border-b-2 border-transparent px-0 py-3 text-sm font-medium whitespace-nowrap text-muted;
+  }
+  .activity-tab[aria-pressed='true'] {
+    @apply border-brand text-brand;
+  }
+}
+@media (min-width: 64rem) {
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 24px;
+  }
+}
+@media (min-width: 80rem) {
+  .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .split-aside .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

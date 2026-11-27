@@ -1,0 +1,56 @@
+@theme static {
+  --color-brand: #5a2580;
+  --color-brand-dark: #42185f;
+  --color-brand-soft: #f3edf8;
+  --color-leaf: #7cb34a;
+  --color-leaf-dark: #3f651f;
+  --color-leaf-soft: #eef6e7;
+  --color-canvas: #ffffff;
+  --color-surface: #ffffff;
+  --color-ink: #242127;
+  --color-muted: #646960;
+  --color-line: #e3e6df;
+  --color-danger: #ac2642;
+  --color-danger-soft: #fff0f3;
+  --color-warm: #fff1dc;
+  --color-warm-ink: #805000;
+  --font-sans:
+    'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo', system-ui,
+    sans-serif;
+  --color-field-edge: #858b80;
+  --color-paper: var(--color-canvas);
+  --color-paper-2: #f6f7f4;
+  --color-paper-3: #edf0e9;
+  --color-ink-2: var(--color-muted);
+  --color-rule: var(--color-line);
+  --color-accent: var(--color-brand);
+  --color-accent-ink: var(--color-surface);
+  --color-focus: var(--color-brand);
+  --color-error: var(--color-danger);
+  --color-success: var(--color-leaf-dark);
+  --font-body: var(--font-sans);
+  --font-display: 'Wanted Sans Variable', var(--font-sans);
+  --font-weight-semibold: 500;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-display: 1.875rem;
+  --text-section: 1.25rem;
+  --text-title: 1rem;
+  --tracking-display: -0.025em;
+  --radius-card: 0.75rem;
+  --radius-control: 0.5rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+:root {
+  --container: 1280px;
+  --gutter: 24px;
+  --gap-columns: 24px;
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --space-3xl: 96px;
+}
